@@ -2,12 +2,12 @@ import argparse
 import os
 
 import torch
-from fz_logger import fz_logger
+from libs.logger import Logger
 
 from libs.mlflow_utils import mlflow_utils
 from svc import api_service
 
-log = fz_logger.Logger(os.path.basename(__file__).split(".")[0])
+log = Logger(os.path.basename(__file__).split(".")[0])
 logger = log.initLogger("INFO", os.path.basename(__file__).split(".")[0])
 
 

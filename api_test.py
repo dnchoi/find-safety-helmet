@@ -6,9 +6,9 @@ import time
 
 import cv2
 import requests
-from fz_logger import fz_logger
+from libs.logger import Logger
 
-log = fz_logger.Logger(os.path.basename(__file__).split(".")[0])
+log = Logger(os.path.basename(__file__).split(".")[0])
 logger = log.initLogger("DEBUG", os.path.basename(__file__).split(".")[0])
 # numpy image to base64 image, base64 to json string, API server request
 def get_predict(img):

@@ -3,10 +3,10 @@ import json
 import os
 import time
 
-from fz_logger import fz_logger
+from libs.logger import Logger
 from libs.utils import *
 
-log = fz_logger.Logger(os.path.basename(__file__).split(".")[0])
+log = Logger(os.path.basename(__file__).split(".")[0])
 logger = log.initLogger("INFO", os.path.basename(__file__).split(".")[0])
 
 

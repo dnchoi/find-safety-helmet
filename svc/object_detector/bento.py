@@ -8,10 +8,10 @@ import torch
 from bentoml.adapters import JsonInput, JsonOutput
 from bentoml.artifact import PytorchModelArtifact
 from models import common, torch_utils, yolo
-from fz_logger import fz_logger
+from libs.logger import Logger
 from svc.object_detector.detector import model_predict
 
-log = fz_logger.Logger(os.path.basename(__file__).split(".")[0])
+log = Logger(os.path.basename(__file__).split(".")[0])
 logger = log.initLogger("INFO", os.path.basename(__file__).split(".")[0])
 
 

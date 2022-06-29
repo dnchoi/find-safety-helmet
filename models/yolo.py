@@ -2,7 +2,7 @@ import os
 from copy import deepcopy
 from pathlib import Path
 
-from fz_logger import fz_logger
+from libs.logger import Logger
 from libs.utils import *
 
 from models.common import *
@@ -10,7 +10,7 @@ from models.torch_utils import *
 
 thop = None
 
-log = fz_logger.Logger(os.path.basename(__file__).split(".")[0])
+log = Logger(os.path.basename(__file__).split(".")[0])
 logger = log.initLogger("INFO", os.path.basename(__file__).split(".")[0])
 
 
