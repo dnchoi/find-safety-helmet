@@ -28,4 +28,5 @@ jobs:
 
       - name: bentoml packing
         run:
+          cat bento-packing.py
           python3 bento-packing.py True
