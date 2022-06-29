@@ -1,6 +1,6 @@
 import argparse
 import os
-
+import sys
 import torch
 from libs.logger import Logger
 
@@ -30,7 +30,7 @@ def mlflow_load_model_weights(artifact_name, artifact_path):
         logger.error("mlflow utils -> mlflow load model & weights : {}".format(e))
 
 
-def get_instance():
+def get_instance(argv):
     try:
         color = "\033[32m"
         end = "\033[0m"
@@ -40,32 +40,60 @@ def get_instance():
         artifact_name = "[kt-moa]yolov5"
         artifact_path = "artifact"
         model_name = "model.pt"
-        model, uuid, version = mlflow_load_model_weights(
-            artifact_name=artifact_name,
-            artifact_path=artifact_path,
-        )
-        logger.info(
-            "   \n{color}MODEL PATH :{end} {}\
-                \n{color}MLFLOW NAME :{end} {}\
-                \n{color}MLFLOW ID :{end} {}\
-                \n{color}MLFLOW VERSION :{end} {}\
-                \n{color}MLFLOW ARTIFACTS PATH :{end} {}\
-                \n{color}NETWORK INFO :{end} {}\
-                \n{color}DEVICE :{end} {}\
-                \n".format(
-                os.path.join(artifact_path, model_name),
-                model.name,
-                uuid,
-                version,
-                artifact_path,
-                "\n{color}anchors : {end}{}\n{color}stride : {end}{}".format(
-                    model.yaml["anchors"], model.stride.tolist(), color="\033[33m", end=end
-                ),
-                device,
-                color=color,
-                end=end,
+        if argv[0] == "True":
+            logger.info("local model load")
+            from models import common
+
+            model = common.attempt_load(os.path.join(artifact_path, model_name), device)
+            uuid, version = "local_uuid", "local_version"
+            logger.info(
+                "   \n{color}MODEL PATH :{end} {}\
+                    \n{color}MLFLOW ID :{end} {}\
+                    \n{color}MLFLOW VERSION :{end} {}\
+                    \n{color}MLFLOW ARTIFACTS PATH :{end} {}\
+                    \n{color}NETWORK INFO :{end} {}\
+                    \n{color}DEVICE :{end} {}\
+                    \n".format(
+                    os.path.join(artifact_path, model_name),
+                    uuid,
+                    version,
+                    artifact_path,
+                    "\n{color}anchors : {end}{}\n{color}stride : {end}{}".format(
+                        model.yaml["anchors"], model.stride.tolist(), color="\033[33m", end=end
+                    ),
+                    device,
+                    color=color,
+                    end=end,
+                )
             )
-        )
+        else:
+            logger.info("using mlflow artifact")
+            model, uuid, version = mlflow_load_model_weights(
+                artifact_name=artifact_name,
+                artifact_path=artifact_path,
+            )
+            logger.info(
+                "   \n{color}MODEL PATH :{end} {}\
+                    \n{color}MLFLOW NAME :{end} {}\
+                    \n{color}MLFLOW ID :{end} {}\
+                    \n{color}MLFLOW VERSION :{end} {}\
+                    \n{color}MLFLOW ARTIFACTS PATH :{end} {}\
+                    \n{color}NETWORK INFO :{end} {}\
+                    \n{color}DEVICE :{end} {}\
+                    \n".format(
+                    os.path.join(artifact_path, model_name),
+                    model.name,
+                    uuid,
+                    version,
+                    artifact_path,
+                    "\n{color}anchors : {end}{}\n{color}stride : {end}{}".format(
+                        model.yaml["anchors"], model.stride.tolist(), color="\033[33m", end=end
+                    ),
+                    device,
+                    color=color,
+                    end=end,
+                )
+            )
         checkpoint = torch.load(os.path.join(artifact_path, model_name), map_location=device)["model"]
 
         model.load_state_dict(checkpoint.state_dict())
@@ -74,10 +102,10 @@ def get_instance():
         logger.error("Bento packing -> load model : {}".format(e))
 
 
-def main():
+def main(argv):
 
     try:
-        instance = get_instance()
+        instance = get_instance(argv)
         service = api_service()
         service.pack("model", instance)
         service.save()
@@ -91,4 +119,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    argv = sys.argv[1:]
+    print(argv)
+    main(argv)

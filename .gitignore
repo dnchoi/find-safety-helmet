@@ -7,4 +7,5 @@ log
 .vscode
 .pytest*
 test_*
+mlruns
 !image.jpg
