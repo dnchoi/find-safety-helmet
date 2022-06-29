@@ -21,3 +21,11 @@ jobs:
         run:
           python3 --version
           sudo apt install python3-pip -y
+
+      - name: Install requrements
+        run:
+          pip3 install -r requirements.txt
+
+      - name: bentoml packing
+        run:
+          python3 bento-packing.py
