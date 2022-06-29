@@ -9,15 +9,15 @@ on:
       - LICENSE
 
 jobs:
-  continuous-delivery:
-
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout source code
-      - uses: actions/checkout@main
+        uses: actions/checkout@main
 
+      - name: Repo check
+        run: tree -L 3
       - name: Install tools
-        run: |
+        run:
           python3 --version
           sudo apt install python3-pip -y
