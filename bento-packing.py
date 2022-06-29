@@ -40,9 +40,18 @@ def get_instance(argv):
         artifact_name = "[kt-moa]yolov5"
         artifact_path = "artifact"
         model_name = "model.pt"
-        if argv[0] == "True":
+        if argv == "True":
             logger.info("local model load")
             from models import common
+            import gdown
+
+            gdown.download_folder(
+                url="https://drive.google.com/drive/u/0/folders",
+                id="10zE2YMON9-gH-z1YZCenNf-2RYHvxqVL",
+                output=artifact_path,
+                quiet=False,
+                use_cookies=False,
+            )
 
             model = common.attempt_load(os.path.join(artifact_path, model_name), device)
             uuid, version = "local_uuid", "local_version"
@@ -119,6 +128,9 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    argv = sys.argv[1:]
+    if len(sys.argv) > 1:
+        argv = sys.argv[1]
+    else:
+        argv = "False"
     print(argv)
     main(argv)
