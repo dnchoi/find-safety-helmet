@@ -45,9 +45,11 @@ def get_instance(argv):
             from models import common
             import gdown
 
+            uri = "https://drive.google.com/drive/u/0/folders/"
+            ids = "10zE2YMON9-gH-z1YZCenNf-2RYHvxqVL"
             gdown.download_folder(
-                url="https://drive.google.com/drive/u/0/folders",
-                id="10zE2YMON9-gH-z1YZCenNf-2RYHvxqVL",
+                url=uri + ids,
+                id=None,
                 output=artifact_path,
                 quiet=False,
                 use_cookies=False,
