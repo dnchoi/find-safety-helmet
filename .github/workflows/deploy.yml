@@ -29,4 +29,7 @@ jobs:
       - name: bentoml packing
         run:
           python3 bento-packing.py True
+
+      - name: bentoml serve test
+        run:
           bentoml get api_service:latest --print-location --quiet
