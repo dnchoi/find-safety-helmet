@@ -1,0 +1,10 @@
+__pycache__
+log
+*.jpg
+*.pt
+*.onnx
+*.out
+.vscode
+.pytest*
+test_*
+!image.jpg
