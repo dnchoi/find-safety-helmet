@@ -29,3 +29,9 @@ jobs:
       - name: bentoml packing
         run:
           python3 bento-packing.py True
+
+      - name: bentoml serve
+        run:
+          bentoml serve api_service:latest
+
+
