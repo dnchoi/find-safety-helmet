@@ -9,3 +9,4 @@ artifact
 test_*
 mlruns
 !image.jpg
+.DS_Store
